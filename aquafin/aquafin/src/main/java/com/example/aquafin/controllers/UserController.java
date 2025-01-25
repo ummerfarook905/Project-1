@@ -1,11 +1,13 @@
 package com.example.aquafin.controllers;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,24 +62,35 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/super-admin-page")
-    @PreAuthorize("hasrole('ROLE_SUPER_ADMIN')")
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";  
+    }
+
+    @GetMapping("/super-admin")
+    @PreAuthorize("hasrole('SUPER_ADMIN')")
     public String superAdminPage(Model model,Principal principal){
+        try {
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-        model.addAttribute("adminUser", userDetails);
+        User superAdmin = userRepository.findByEmail(userDetails.getUsername());
 
-        User superAdmin = userRepository.findByRole("SUPER_ADMIN").stream().findFirst().orElse(null);
         List<User> users = userRepository.findAll()
-        .stream()
-        .filter(user -> !user.getEmail().equals(superAdmin.getEmail())) // Exclude the super admin
-        .toList();
+            .stream()
+            .filter(user -> !user.getEmail().equals(superAdmin.getEmail()))
+            .collect(Collectors.toList());
 
+        model.addAttribute("adminUser", userDetails);
+        model.addAttribute("user", superAdmin);
         model.addAttribute("users", users);
-        return "super-admin";
 
+        return "super-admin";
+    } catch (UsernameNotFoundException e) {
+        model.addAttribute("errorMessage", "Super Admin account not found");
+        return "error";
+    }
     }
     
-    @GetMapping("/admin-page")
+    @GetMapping("/admin")
     public String adminpage(Model model, Principal principal){
         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 
@@ -86,7 +99,7 @@ public class UserController {
         model.addAttribute("adminUser", userDetails);
         model.addAttribute("user", user);
 
-        List<User> users = userRepository.findByRole("USER");
+        List<User> users = userRepository.findByRole("ADMIN");
         model.addAttribute("users", users);
         return "admin";
     }

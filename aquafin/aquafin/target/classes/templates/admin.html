@@ -47,11 +47,11 @@
         <h2>Welcome, [[${user.fullname}]]</h2>
 
         <!-- Logout button (ensure Spring Security config is in place) -->
-        <span sec:authorize="isAuthenticated()">
+        <!-- <span sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
                 <button type="submit" style="background-color: #45b6fe; border-radius: 10px;">Logout</button>
             </form>
-        </span>
+        </span> -->
 
         <h2>Users List</h2>
         <table border="1">
@@ -60,6 +60,7 @@
                     <th>ID</th>
                     <th>Full Name</th>
                     <th>Email</th>
+                    <th>Modify</th>
                 </tr>
             </thead>
             <tbody>

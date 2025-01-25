@@ -3,6 +3,7 @@ package com.example.aquafin.configurations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.aquafin.services.CustomSuccessHandler;
+import com.example.aquafin.services.CustomUserDetailsService;
 
 
 @Configuration
@@ -21,6 +23,9 @@ public class SecurityConfig {
     @Autowired
     CustomSuccessHandler customSuccessHandler;
 
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -28,19 +33,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
+
+        http.csrf(c -> c.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/admin-page").hasAuthority("ADMIN")
-                .requestMatchers("/super-admin-page").hasAuthority("SUPER_ADMIN")
-                .requestMatchers("/login", "/register", "/registration").permitAll()  
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers("/super-admin").hasRole("SUPER_ADMIN")
+                .requestMatchers("/login", "/register", "/registration","/index").permitAll()  
                 .requestMatchers("/dashboard").authenticated()  
                 .anyRequest().authenticated()  
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/dashboard", true)  
+                // .defaultSuccessUrl("/dashboard", true)  
                 .successHandler(customSuccessHandler)
                 .failureUrl("/login?error=true")  
                 .permitAll()  
@@ -59,5 +64,10 @@ public class SecurityConfig {
                 .expiredUrl("/login?expired")  
             );
         return http.build();
+    }
+
+    @Autowired
+    public void configure (AuthenticationManagerBuilder auth) throws Exception{
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
     }
 }

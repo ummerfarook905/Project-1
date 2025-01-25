@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super-admin page</title>
+    <title>Super-admin</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,11 +71,11 @@
     <div class="container">
         <h2>Welcome, [[${user.getFullname()}]]</h2>
         
-        <span sec:authorize="isAuthenticated">
+        <!-- <span sec:authorize="isAuthenticated">
             <form th:action="@{/logout}" method="post">
                 <button type="submit" style="background-color: #45b6fe; border-radius: 10px;">Logout</button>
             </form>
-        </span>
+        </span> -->
 
         <h2>USERS AND ADMINS</h2>
         <table border="1">
