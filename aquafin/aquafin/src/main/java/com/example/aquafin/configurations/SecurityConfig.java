@@ -35,19 +35,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(c -> c.disable())
-            .authorizeHttpRequests(request -> request
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/super-admin").hasRole("SUPER_ADMIN")
-                .requestMatchers("/login", "/register", "/registration","/index").permitAll()  
-                .requestMatchers("/dashboard").authenticated()  
-                .anyRequest().authenticated()  
-            )
+    
+        .authorizeHttpRequests(request -> request
+                .requestMatchers("/superadmin-page").hasAuthority("SUPER_ADMIN")  
+                .requestMatchers("/admin-page").hasAuthority("ADMIN")              
+                .requestMatchers("/dashboard").hasAuthority("USER")                
+                .requestMatchers("/register", "/css/**").permitAll()           
+                .anyRequest().authenticated())                                     
+         
+            
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 // .defaultSuccessUrl("/dashboard", true)  
                 .successHandler(customSuccessHandler)
-                .failureUrl("/login?error=true")  
+                // .failureUrl("/login?error=true")  
                 .permitAll()  
             )
             .logout(logout -> logout

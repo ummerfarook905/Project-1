@@ -63,9 +63,10 @@ public class UserController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";  
+    public String userPage(Model model) {
+        return "dashboard";
     }
+    
 
     @GetMapping("/super-admin")
     @PreAuthorize("hasrole('SUPER_ADMIN')")
@@ -89,31 +90,54 @@ public class UserController {
         return "error";
     }
     }
-    
+
+
     @GetMapping("/admin")
-    public String adminpage(Model model, Principal principal){
-        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+	public String adminPage(Model model, Principal principal) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+		
+    User user = userRepository.findByEmail(userDetails.getUsername());
+    
 
-        User user = userRepository.findByEmail(userDetails.getUsername());
+	model.addAttribute("adminUser", userDetails);
+    model.addAttribute("user", user);
 
-        model.addAttribute("adminUser", userDetails);
-        model.addAttribute("user", user);
+	List<User> users = userRepository.findByRole("USER");
+	model.addAttribute("users",users);
 
-        List<User> users = userRepository.findByRole("ADMIN");
-        model.addAttribute("users", users);
-        return "admin";
-    }
+    return "admin"; 
+	}
+    
+    // @GetMapping("/admin")
+    // public String adminpage(Model model, Principal principal){
+    //     try {
+    //         UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+    //         User Admin = userRepository.findByEmail(userDetails.getUsername());
+    
+    //         List<User> users = userRepository.findAll()
+    //             .stream()
+    //             .filter(user -> !user.getEmail().equals(Admin.getEmail()))
+    //             .collect(Collectors.toList());
+    //         model.addAttribute("user", Admin);
+    //         model.addAttribute("users", users);
+    
+    //         return "admin";
+    //     } catch (UsernameNotFoundException e) {
+    //         model.addAttribute("errorMessage", " Admin account not found");
+    //         return "error";
+    //     }
+    // }
 
     @PostMapping("/admin/delete-user/{id}")
     public String deleteUser(@PathVariable("id") Long id){
         userService.deleteUserById(id);
-        return "redirect:/admin-page";
+        return "redirect:/admin";
     }
 
     @PostMapping("/super-admin/delete-user/{id}")
     public String deleteUserAsSuperadmin(@PathVariable("id") Long id){
         userService.deleteUserById(id);
-        return "redirect:/admin-page";
+        return "redirect:/admin";
     }
 
     @PostMapping("/super-admin/change-role/{id}")
@@ -123,7 +147,7 @@ public class UserController {
             user.setRole(role);
             userRepository.save(user);
         }
-        return "redirect:/super-admin-page";   
+        return "redirect:/super-admin";   
     }
 
     @GetMapping("/access-denied")
