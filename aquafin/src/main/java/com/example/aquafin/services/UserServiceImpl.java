@@ -21,12 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserDto userDto) {
-        User user = new User(
-            userDto.getEmail(),
-            passwordEncoder.encode(userDto.getPassword()),
-            userDto.getRole(),
-            userDto.getFullname()
-        );
+        User user = new User(userDto.getEmail(),passwordEncoder.encode(userDto.getPassword()), userDto.getRole() ,userDto.getFullname());
         user.setRole("USER");
         return userRepository.save(user);
     }
@@ -44,5 +39,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void deleteUserById(Long id){
+        userRepository.deleteById(id);
     }
 }

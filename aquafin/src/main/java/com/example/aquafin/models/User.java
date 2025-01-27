@@ -1,42 +1,43 @@
 package com.example.aquafin.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
-    private String role;
+
+    @Column(nullable = false)
     private String fullname;
 
-    // Default constructor (required for JPA)
+    @Column(nullable = false)
+    private String role;
+
     public User() {
+        super();
     }
 
-    // Constructor with parameters
-    public User(String email, String password, String fullname, String role) {
+    public User(String email, String password, String role, String fullname) {
         this.email = email;
         this.password = password;
-        this.fullname = fullname;
         this.role = role;
+        this.fullname = fullname;
     }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -67,5 +68,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

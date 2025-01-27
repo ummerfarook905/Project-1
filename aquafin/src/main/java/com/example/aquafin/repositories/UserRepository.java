@@ -9,4 +9,6 @@ import com.example.aquafin.models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     List<User> findByRole(String role);
+    // List<User> findByRoleIn(List<String> roles);   
+    
 }

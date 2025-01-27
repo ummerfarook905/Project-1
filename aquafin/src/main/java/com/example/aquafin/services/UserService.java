@@ -9,5 +9,6 @@ public interface UserService {
     User save(UserDto userDto);
     List<User> getAllUsers();
     List<User> getUsersByRole(String role);
+    void deleteUserById(Long id);
     User findByEmail(String email);
 }
