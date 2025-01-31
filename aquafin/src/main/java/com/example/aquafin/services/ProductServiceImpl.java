@@ -1,5 +1,44 @@
 package com.example.aquafin.services;
 
-public class ProductServiceImpl {
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.aquafin.models.Product;
+import com.example.aquafin.repositories.ProductRepository;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Override
+    public void  addProduct(Product product){
+         productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> getAllProducts(){
+        return productRepository.findAll();
+    }
+
+    @Override
+    public void  deleteProduct(Long id){
+          if(!productRepository.existsById(id)){
+               throw new RuntimeException("Product with ID" + id + "not found");
+          }
+         productRepository.deleteById(id);
+    }
+
+    @Override
+    public void  updateProduct(Product product){
+         productRepository.save(product);
+    }
+
+
+
+
 
 }

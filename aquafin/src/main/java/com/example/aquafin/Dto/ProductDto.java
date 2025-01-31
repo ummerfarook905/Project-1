@@ -1,41 +1,43 @@
-package com.example.aquafin.Dto;
+// package com.example.aquafin.Dto;
 
-public class ProductDto {
-    private String name;
-    private String description;
-    private String price;
-    private String quantity;  
+// public class ProductDto {
+//     private String name;
+//     private String description;
+//     private String price;
+//     private String quantity;  
 
-    public String getProductName() {
-        return name;
-    }
+//     public String getName() {
+//         return name;
+//     }
 
-    public void setProductName(String ProductName) {
-        this.name = name;
-    }
+//     public void setName(String name) {
+//         this.name = name;
+//     }
 
-    public String getDescription() {
-        return description;
-    }
+//     public String getDescription() {
+//         return description;
+//     }
 
-    public void setDescription(String Description) {
-        this.description = description;
-    }
+//     public void setDescription(String description) {
+//         this.description = description;
+//     }
 
-    public String getPrice() {
-        return price;
-    }
+//     public String getPrice() {
+//         return price;
+//     }
 
-    public void setPrice(String Price) {
-        this.price = price;
-    }
+//     public void setPrice(String price) {
+//         this.price = price;
+//     }
 
-    public String getQuantity() {
-        return quantity;
-    }
+//     public String getQuantity() {
+//         return quantity;
+//     }
 
-    public void setQuantity(String Quantity) {
-        this.quantity = quantity;
-    }
+//     public void setQuantity(String quantity) {
+//         this.quantity = quantity;
+//     }
 
-}
+    
+
+// }
