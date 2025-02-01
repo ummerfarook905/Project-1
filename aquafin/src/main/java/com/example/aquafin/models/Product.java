@@ -52,14 +52,6 @@ public class Product {
         this.id = id;
     }
 
-    public String getProductname() {
-        return name;
-    }
-
-    public void setProductname(String productname) {
-        this.name = productname;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -90,6 +82,14 @@ public class Product {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 

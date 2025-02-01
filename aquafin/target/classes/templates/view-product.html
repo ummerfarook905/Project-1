@@ -10,6 +10,30 @@
     <div>
         <a th:href="@{/super-admin/add-product}">Add product</a>
     </div>
+
+    <div th:action="@{super-admin/view-products}" th:object="${product}" method="get">
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Image</th>
+            </tr>
+    
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td th:text="${product.image}"></td>
+            </tr>
+        </table>
+    </div>
+
+
     
 </body>
 </html>

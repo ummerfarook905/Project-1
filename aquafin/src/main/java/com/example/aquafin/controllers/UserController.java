@@ -92,7 +92,7 @@ public class UserController {
         return "super-admin";
     } catch (UsernameNotFoundException e) {
         model.addAttribute("errorMessage", "Super Admin account not found");
-        return "error";
+        return "login";
     }
     }
 

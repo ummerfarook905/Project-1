@@ -23,7 +23,8 @@ public class ProductController {
 
     @GetMapping("/super-admin/add-product")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public  String getAddProduct(Product product){
+    public  String getAddProduct(Model model){
+        model.addAttribute("product", new Product());
         return "add-product";
     }
 
