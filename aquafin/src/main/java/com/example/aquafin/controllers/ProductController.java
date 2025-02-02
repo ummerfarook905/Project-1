@@ -30,9 +30,13 @@ public class ProductController {
 
     @PostMapping("/super-admin/add-product")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public String addProduct(Product product){
-        productService.addProduct(product);
-        return "redirect:/super-admin";
+    public String addProduct(@ModelAttribute("product") Product product) {
+        try {
+            productService.addProduct(product);
+            return "redirect:/super-admin/view-products";  // Changed redirect
+        } catch (Exception e) {
+            return "redirect:/super-admin/add-product?error";
+        }
     }
 
     @GetMapping("/super-admin/view-products")
@@ -45,8 +49,14 @@ public class ProductController {
 
     @GetMapping("/super-admin/update-product/{id}")
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public String getEditProductPage(Model model){
-        return "update-product";
+    public String getEditProductPage(@PathVariable Long id, Model model) {  // Added @PathVariable
+        try {
+            Product product = productService.getProductById(id);
+            model.addAttribute("product", product);
+            return "update-product";
+        } catch (Exception e) {
+            return "redirect:/super-admin/view-products?error";
+        }
     }
 
     @PostMapping("/super-admin/update-product/{id}")

@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/super-admin").hasAuthority("SUPER_ADMIN")  
                 .requestMatchers("/admin-page").hasAuthority("ADMIN")              
                 .requestMatchers("/dashboard").hasAuthority("USER")                
-                .requestMatchers("/register", "/css/**").permitAll()           
+                .requestMatchers("/register","/index", "/css/**").permitAll()           
                 .anyRequest().authenticated())                                     
          
             
