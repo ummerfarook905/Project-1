@@ -22,46 +22,46 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/super-admin/add-product")
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAthority('SUPER_ADMIN')")
     public  String getAddProduct(Model model){
         model.addAttribute("product", new Product());
         return "add-product";
     }
 
     @PostMapping("/super-admin/add-product")
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAthority('SUPER_ADMIN')")
     public String addProduct(@ModelAttribute("product") Product product) {
         try {
             productService.addProduct(product);
-            return "redirect:/super-admin/view-products";  // Changed redirect
+            return "redirect:/super-admin/view-products";  
         } catch (Exception e) {
             return "redirect:/super-admin/add-product?error";
         }
     }
 
     @GetMapping("/super-admin/view-products")
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAthority('SUPER_ADMIN')")
     public String viewProducts(Model model){
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products",products);
         return "view-products";
     }
 
-    @GetMapping("/super-admin/update-product/{id}")
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @GetMapping("/super-admin/update-products/{id}")
+    @PreAuthorize("hasAthority('SUPER_ADMIN')")
     public String getEditProductPage(@PathVariable Long id, Model model) {  // Added @PathVariable
         try {
             Product product = productService.getProductById(id);
             model.addAttribute("product", product);
-            return "update-product";
+            return "update-products";
         } catch (Exception e) {
-            return "redirect:/super-admin/view-products?error";
+            return "redirect:/super-admin/view-products";
         }
     }
 
-    @PostMapping("/super-admin/update-product/{id}")
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public String updateProduct(@PathVariable Long id,@ModelAttribute Product product,Model model){
+    @PostMapping("/super-admin/update-products/{id}")
+    @PreAuthorize("hasAthority('SUPER_ADMIN')")
+    public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product product,Model model){
         try {
             product.setId(id);
             productService.updateProduct(product);
@@ -69,7 +69,7 @@ public class ProductController {
         } catch (Exception e) {
             model.addAttribute("error", "Failed to update product");
             model.addAttribute("product", product);
-            return "update-product";
+            return "update-products";
         }
     }
 }

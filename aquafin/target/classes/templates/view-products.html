@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Products</h1>
+
+    <div>
+        <a th:href="@{/super-admin/add-product}">Add product</a>
+    </div>
+
+    <!-- <div>
+        <a th:href="@{/super-admin/update-products/{id}(id=${product.id})}">Update product</a>
+    </div> -->
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td th:text="${product.image}"></td>
+                </tr>
+            </tbody>
+            
+        </table>
+
+
+    
+</body>
+</html>

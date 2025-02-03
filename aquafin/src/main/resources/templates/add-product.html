@@ -4,34 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1b0519;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .d1{
+            display: grid;
+
+        }
+    </style>
 </head>
 <body>
-    <form action="#" th:action="@{super-admin/add-product}" th:object="${product}" method="post">
-        <label>Product Number:</label>
-        <input type="text" id="productnumber" th:field="{id}" requuired/>
 
-        <label>Name:</label>
-        <input type="text" id="name" th:field="{name}" requuired/>
-
-        <label>Decription:</label>
-        <input type="text" id="description" th:field="{description}" requuired/>
-
-        <label>Price:</label>
-        <input type="text" id="price" th:field="{price}" requuired/>
-
-        <label>Quantity:</label>
-        <input type="text" id="quantity" th:field="{quantity}" requuired/>
-
-        <button type="submit">Add</button>
-    </form>
-
-    <div>
-        <a th:href="@{/super-admin/view-products}">Back to products</a>
+    <h1>Add Products</h1>
+    <div class="d1">
+        <form  th:action="@{/super-admin/add-product}" th:object="${product}" method="post">
+            <!-- <label>Product Number:</label>
+            <input type="text" id="productnumber" th:field="*{id}" requuired/> -->
+    
+            <label>Name:</label>
+            <input type="text" id="name" th:field="*{name}" requuired/>
+    
+            <label>Decription:</label>
+            <input type="text" id="description" th:field="*{description}" requuired/>
+    
+            <label>Price:</label>
+            <input type="number" id="price" th:field="*{price}" requuired/>
+    
+            <label>Quantity:</label>
+            <input type="number" id="quantity" th:field="*{quantity}" requuired/>
+    
+            <label>Image:</label>
+            <input type="url" id="image" th:field="*{image}" requuired/>
+    
+            <button type="submit">Add</button>
+        </form>
+    
+        <div>
+            <a th:href="@{/super-admin/view-products}">Back to products</a>
+        </div>
+    
+        <div>
+            <a th:href="@{/super-admin}">Back to dashboard</a>
+        </div>
     </div>
-
-    <div>
-        <a th:href="@{/super-admin}">Back to dashboard</a>
-    </div>
+    
     
 </body>
 </html>

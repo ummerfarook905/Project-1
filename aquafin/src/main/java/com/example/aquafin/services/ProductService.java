@@ -2,8 +2,11 @@ package com.example.aquafin.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.example.aquafin.models.Product;
 
+@Service
 public interface ProductService {
 
     void addProduct(Product product);
