@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.aquafin.Dto.UserDto;
+import com.example.aquafin.models.Product;
 import com.example.aquafin.models.User;
 import com.example.aquafin.repositories.UserRepository;
+import com.example.aquafin.services.ProductService;
 import com.example.aquafin.services.UserService;
 
 @Controller
@@ -62,6 +64,9 @@ public class UserController {
         return "login";
     }
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/dashboard")
     public String userPage(Model model, Principal principal) {
         if (principal != null) {
@@ -69,6 +74,8 @@ public class UserController {
             User user = userRepository.findByEmail(email);
             model.addAttribute("user", user);
         }
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
         return "dashboard";
     }
     

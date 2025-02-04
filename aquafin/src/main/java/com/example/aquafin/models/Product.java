@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,9 +27,10 @@ public class Product {
     @Column(nullable = false)
     private String quantity;
 
-    @Lob  
-    @Column(name = "image", columnDefinition = "LONGBLOB")  
-    private byte[] image;
+    @Column(nullable = false)
+    private String image;
+
+    
 
     // public Product(){
     //     super();
@@ -76,13 +76,6 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
 
     public String getName() {
         return name;
@@ -90,6 +83,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 

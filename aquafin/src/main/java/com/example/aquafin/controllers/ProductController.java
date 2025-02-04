@@ -72,4 +72,20 @@ public class ProductController {
             return "update-products";
         }
     }
+
+    @PostMapping("/super-admin/delete-product/{id}")
+    // @PreAuthorize("hasAthority('SUPER_ADMIN')")
+    public String deleteProduct(@PathVariable("id") Long id){
+        productService.deleteProductById(id);
+        return "redirect:/super-admin/view-products";
+    }
+
+    // @PostMapping("/super-admin/delete-product/{id}")
+    // @PreAuthorize("hasAthority('SUPER_ADMIN')")
+    // public String deleteProducts(@PathVariable("id") Long id){
+    //     productService.deleteProduct(id);
+    //     return "redirect:/super-admin";
+    // }
+
+    
 }

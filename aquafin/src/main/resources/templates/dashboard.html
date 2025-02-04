@@ -15,7 +15,7 @@
 
     .product-grid {
     display: grid;
-    color: black;
+    color: white;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     padding: 20px;
@@ -77,16 +77,16 @@
     </div>
     <h1>Product List</h1>
     <div class="product-grid">
-        <!-- Loop through products -->
+        Loop through products
         <div class="product" th:each="product : ${products}">
-            <img th:src="@{/products/image/{id}(id=${product.id})}" alt="Product Image">
+            <img th:src="${product.image}" alt="Product Image">
             <h3 th:text="${product.name}">Name</h3>
             <h3 th:text="${product.description}">Description</h3>
             <p th:text="'Price: $' + ${product.price}">Prize</p>
-            <!-- <p th:text="'Quantity: ' + ${product.quantity}">Quantity</p> -->
             <button>Add to Cart</button>
         </div>
     </div>
+
     
 </body>
 </html>

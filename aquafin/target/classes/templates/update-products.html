@@ -30,6 +30,9 @@
         <button type="submit">Update Products</button>
 
     </form>
+    <form th:action="@{/super-admin/delete-product/{id}(id=${product.id})}" method="post">
+        <button type="submit">Delete</button>
+    </form>
 
     <div>
         <a th:href="@{/super-admin/view-products}">Back to products</a>
