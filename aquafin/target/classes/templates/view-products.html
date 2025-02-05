@@ -38,10 +38,14 @@
                     <td th:text="${product.quantity}"></td>
                     <td th:text="${product.image}"></td>
                     <td>
-                        <form th:action="@{/admin/delete-product/{id}(id=${product.id})}" method="post">
+                        <form th:action="@{/super-admin/delete-product/{id}(id=${product.id})}" method="post">
                             <button type="submit">Delete</button>
                         </form>
-                        
+                    </td>
+                    <td>
+                        <form th:action="@{/super-admin/update-products/{id}(id=${product.id})}" method="post">
+                            <button type="submit">Update</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>

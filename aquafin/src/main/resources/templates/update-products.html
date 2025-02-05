@@ -6,6 +6,8 @@
     <title>Document</title>
 </head>
 <body>
+
+<h1>Update Products</h1>
     <form  th:action="@{/super-admin/update-products/{id}(id=${product.id})}" th:object="${product}" method="post">
         <h1>Update products</h1>
 

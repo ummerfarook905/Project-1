@@ -61,20 +61,24 @@ public class ProductController {
 
     @PostMapping("/super-admin/update-products/{id}")
     @PreAuthorize("hasAthority('SUPER_ADMIN')")
-    public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product product,Model model){
-        try {
-            product.setId(id);
-            productService.updateProduct(product);
-            return "redirect:/super-admin/view-products";
-        } catch (Exception e) {
-            model.addAttribute("error", "Failed to update product");
-            model.addAttribute("product", product);
-            return "update-products";
+    public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product updatedProduct){
+        Product existProduct = productService.getProductById(id);
+
+        if(existProduct != null){
+            existProduct.setId(updatedProduct.getId());
+            existProduct.setName(updatedProduct.getName());
+            existProduct.setDescription(updatedProduct.getDescription());
+            existProduct.setPrice(updatedProduct.getPrice());
+            existProduct.setQuantity(updatedProduct.getQuantity());
+
+            productService.updateProduct(existProduct);
         }
+
+        return "redirect:/super-admin/view-products";
     }
 
     @PostMapping("/super-admin/delete-product/{id}")
-    // @PreAuthorize("hasAthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAthority('SUPER_ADMIN')")
     public String deleteProduct(@PathVariable("id") Long id){
         productService.deleteProductById(id);
         return "redirect:/super-admin/view-products";
