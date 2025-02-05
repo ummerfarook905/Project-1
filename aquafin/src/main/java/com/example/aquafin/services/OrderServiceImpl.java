@@ -1,19 +1,38 @@
-// package com.example.aquafin.services;
+package com.example.aquafin.services;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
+import java.util.jar.Attributes;
 
-// import com.example.aquafin.models.Order;
-// import com.example.aquafin.repositories.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// @Service
-// public class OrderServiceImpl {
+import com.example.aquafin.models.Order;
+import com.example.aquafin.models.Product;
+import com.example.aquafin.repositories.OrderRepository;
 
-//     @Autowired
-//     private OrderRepository orderRepository;
+@Service
+public class OrderServiceImpl {
 
-//     public void  addToCart(Order order){
-//          orderRepository.save(order);
-//     }
+    // @Autowired
+    // private ProductRepository productRepository;
 
-// }
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    public Order addToCart(Long id,int quantity){
+        
+        Product product = productService.getProductById(id);
+
+        double totalPrice = product.getPrice() * quantity;
+
+        Order order = new Order();
+        order.product(product);
+        order.setQuantity(quantity);
+        order.setTotalPrice(totalPrice);
+
+         return orderRepository.save(order);
+    }
+
+}

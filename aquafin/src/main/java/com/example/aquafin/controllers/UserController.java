@@ -149,7 +149,7 @@ public class UserController {
     @PostMapping("/super-admin/delete-user/{id}")
     public String deleteUserAsSuperadmin(@PathVariable("id") Long id){
         userService.deleteUserById(id);
-        return "redirect:/admin";
+        return "redirect:/super-admin";
     }
 
     @PostMapping("/super-admin/change-role/{id}")

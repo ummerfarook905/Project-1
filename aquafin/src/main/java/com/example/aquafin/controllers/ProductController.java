@@ -50,26 +50,26 @@ public class ProductController {
     @GetMapping("/super-admin/update-products/{id}")
     @PreAuthorize("hasAthority('SUPER_ADMIN')")
     public String getEditProductPage(@PathVariable Long id, Model model) {  // Added @PathVariable
-        try {
-            Product product = productService.getProductById(id);
-            model.addAttribute("product", product);
-            return "update-products";
-        } catch (Exception e) {
+        Product product = productService.getProductById(id);
+        if(product == null){
+            model.addAttribute("error", "product not found");
             return "redirect:/super-admin/view-products";
         }
+        model.addAttribute("product", product);
+        return "update-product";
     }
 
     @PostMapping("/super-admin/update-products/{id}")
     @PreAuthorize("hasAthority('SUPER_ADMIN')")
-    public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product updatedProduct){
+    public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product product){
         Product existProduct = productService.getProductById(id);
 
         if(existProduct != null){
-            existProduct.setId(updatedProduct.getId());
-            existProduct.setName(updatedProduct.getName());
-            existProduct.setDescription(updatedProduct.getDescription());
-            existProduct.setPrice(updatedProduct.getPrice());
-            existProduct.setQuantity(updatedProduct.getQuantity());
+            existProduct.setName(product.getName());
+            existProduct.setDescription(product.getDescription());
+            existProduct.setPrice(product.getPrice());
+            existProduct.setQuantity(product.getQuantity());
+            existProduct.setImage(product.getImage());
 
             productService.updateProduct(existProduct);
         }

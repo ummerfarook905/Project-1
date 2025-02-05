@@ -1,68 +1,71 @@
-// package com.example.aquafin.models;
+package com.example.aquafin.models;
 
-// import jakarta.persistence.Column;
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
-// @Entity
-// @Table(name="order")
-// public class Order {
+@Entity
+@Table(name="order")
+public class Order {
 
-//     @Column(nullable = false)
-//     private Long id;
+    @Column(nullable = false)
+    private Long id;
 
-//     @Column(nullable = false)
-//     private String useremail;
+    @Column(nullable = false)
+    private String useremail;
 
-//     @Column(nullable = false)
-//     private String productname;
+    @Column(nullable = false)
+    private int quantity;
 
-//     @Column(nullable = false)
-//     private String description;
+    @Column(nullable = false)
+    private double totalPrice;
 
-//     @Column(nullable = false)
-//     private String price;
+    @Column(nullable = false)
+    private String price;
 
-//     public Long getId() {
-//         return id;
-//     }
+    public Long getId() {
+        return id;
+    }
 
-//     public void setId(Long id) {
-//         this.id = id;
-//     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getUseremail() {
+        return useremail;
+    }
 
-//     public String getUseremail() {
-//         return useremail;
-//     }
+    public void setUseremail(String useremail) {
+        this.useremail = useremail;
+    }
 
-//     public void setUseremail(String useremail) {
-//         this.useremail = useremail;
-//     }
+    public int getQuantity() {
+        return quantity;
+    }
 
-//     public String getProductname() {
-//         return productname;
-//     }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-//     public void setProductname(String productname) {
-//         this.productname = productname;
-//     }
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 
-//     public String getDescription() {
-//         return description;
-//     }
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
-//     public void setDescription(String description) {
-//         this.description = description;
-//     }
+    public String getPrice() {
+        return price;
+    }
 
-//     public String getPrice() {
-//         return price;
-//     }
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-//     public void setPrice(String price) {
-//         this.price = price;
-//     }
+    
+
+    
 
     
 
@@ -71,4 +74,4 @@
     
 
 
-// }
+}

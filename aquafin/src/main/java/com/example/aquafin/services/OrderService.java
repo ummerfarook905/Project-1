@@ -1,12 +1,11 @@
-// package com.example.aquafin.services;
+package com.example.aquafin.services;
 
-// import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;
 
-// import com.example.aquafin.models.Order;
 
-// @Service
-// public interface OrderService {
+@Service
+public interface OrderService {
 
-//     void addToCart(Order order);
+    void addToCart(Long id, int quantity);
 
-// }
+}
