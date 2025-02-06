@@ -2,17 +2,25 @@ package com.example.aquafin.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="order")
 public class Order {
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String useremail;
+    private String email;
+
+    @ManyToOne
+    private Product product;
 
     @Column(nullable = false)
     private int quantity;
@@ -20,8 +28,8 @@ public class Order {
     @Column(nullable = false)
     private double totalPrice;
 
-    @Column(nullable = false)
-    private String price;
+    @ManyToOne
+    private User user;
 
     public Long getId() {
         return id;
@@ -29,14 +37,6 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUseremail() {
-        return useremail;
-    }
-
-    public void setUseremail(String useremail) {
-        this.useremail = useremail;
     }
 
     public int getQuantity() {
@@ -55,12 +55,28 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public String getPrice() {
-        return price;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     

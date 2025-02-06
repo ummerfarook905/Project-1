@@ -22,7 +22,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private String price;
+    private Float price;
 
     @Column(nullable = false)
     private String quantity;
@@ -60,13 +60,7 @@ public class Product {
         this.description = description;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
+    
 
     public String getQuantity() {
         return quantity;
@@ -91,6 +85,14 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
 

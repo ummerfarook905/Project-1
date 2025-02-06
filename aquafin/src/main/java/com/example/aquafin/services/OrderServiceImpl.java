@@ -1,6 +1,5 @@
 package com.example.aquafin.services;
 
-import java.util.jar.Attributes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,7 @@ import com.example.aquafin.models.Product;
 import com.example.aquafin.repositories.OrderRepository;
 
 @Service
-public class OrderServiceImpl {
+public class OrderServiceImpl implements ProductService {
 
     // @Autowired
     // private ProductRepository productRepository;
@@ -21,14 +20,15 @@ public class OrderServiceImpl {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order addToCart(Long id,int quantity){
-        
+    public Order addToCart(Long id,int quantity,String email){
+
         Product product = productService.getProductById(id);
 
-        double totalPrice = product.getPrice() * quantity;
+        float totalPrice = product.getPrice() * quantity;
 
         Order order = new Order();
-        order.product(product);
+        order.setEmail(email);
+        order.setProduct(product);
         order.setQuantity(quantity);
         order.setTotalPrice(totalPrice);
 
