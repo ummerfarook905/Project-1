@@ -61,7 +61,6 @@ public class Product {
     }
 
     
-
     public String getQuantity() {
         return quantity;
     }

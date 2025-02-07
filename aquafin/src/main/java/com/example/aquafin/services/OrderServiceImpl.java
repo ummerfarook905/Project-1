@@ -9,7 +9,7 @@ import com.example.aquafin.models.Product;
 import com.example.aquafin.repositories.OrderRepository;
 
 @Service
-public class OrderServiceImpl implements ProductService {
+public class OrderServiceImpl implements OrderService {
 
     // @Autowired
     // private ProductRepository productRepository;
@@ -20,11 +20,12 @@ public class OrderServiceImpl implements ProductService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order addToCart(Long id,int quantity,String email){
+    @Override
+    public void  addToCart(Long id,int quantity,String email){
 
         Product product = productService.getProductById(id);
 
-        float totalPrice = product.getPrice() * quantity;
+        float totalPrice = product.getPrice(id) * quantity;
 
         Order order = new Order();
         order.setEmail(email);
@@ -32,7 +33,9 @@ public class OrderServiceImpl implements ProductService {
         order.setQuantity(quantity);
         order.setTotalPrice(totalPrice);
 
-         return orderRepository.save(order);
+        orderRepository.save(order);
     }
+
+    
 
 }

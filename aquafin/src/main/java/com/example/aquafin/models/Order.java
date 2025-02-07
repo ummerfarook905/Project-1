@@ -26,7 +26,7 @@ public class Order {
     private int quantity;
 
     @Column(nullable = false)
-    private double totalPrice;
+    private float  totalPrice;
 
     @ManyToOne
     private User user;
@@ -47,13 +47,6 @@ public class Order {
         this.quantity = quantity;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 
     public Product getProduct() {
         return product;
@@ -77,6 +70,14 @@ public class Order {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     
