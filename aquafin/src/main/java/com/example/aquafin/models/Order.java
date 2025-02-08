@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="order")
+@Table(name="orders")
 public class Order {
 
     @Id
@@ -26,10 +26,7 @@ public class Order {
     private int quantity;
 
     @Column(nullable = false)
-    private float  totalPrice;
-
-    @ManyToOne
-    private User user;
+    private double  totalPrice;
 
     public Long getId() {
         return id;
@@ -56,14 +53,6 @@ public class Order {
         this.product = product;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -72,13 +61,15 @@ public class Order {
         this.email = email;
     }
 
-    public float getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(float totalPrice) {
+    public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    
 
     
 

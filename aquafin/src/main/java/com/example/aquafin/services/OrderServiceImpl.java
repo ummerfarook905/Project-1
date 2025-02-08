@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 import com.example.aquafin.models.Order;
 import com.example.aquafin.models.Product;
 import com.example.aquafin.repositories.OrderRepository;
+import com.example.aquafin.repositories.ProductRepository;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    // @Autowired
-    // private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private ProductService productService;
@@ -25,7 +26,9 @@ public class OrderServiceImpl implements OrderService {
 
         Product product = productService.getProductById(id);
 
-        float totalPrice = product.getPrice(id) * quantity;
+        double totalPrice = calculateTotalAmount(id,quantity);
+
+        // float totalPrice = product.getPrice(id) * quantity;
 
         Order order = new Order();
         order.setEmail(email);
@@ -34,6 +37,25 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(totalPrice);
 
         orderRepository.save(order);
+    }
+
+    
+    @Override
+    public double calculateTotalAmount(Long id,int quantity){
+
+        double productPrice = getProductPrice(id);
+
+        return  productPrice * quantity;
+    }
+
+    @Override
+    public double getProductPrice(Long id) {
+        return getProduct(id).getPrice();
+    }
+    
+    private Product getProduct(Long id) {
+        return productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
     }
 
     

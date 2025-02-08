@@ -78,17 +78,22 @@
         <table>
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Price</th>
+                    <th>orderId</th>
+                    <th>Email</th>
+                    <th>ProductID</th>
                     <th>Quantity</th>
-                    <th>Total</th>
+                    <th>TotalPrice</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td></td>
-                    <td>$20.00</td>
-                    <td>1</td>
-                    <td>$20.00</td>
+                <tr><tr th:each="order : ${order}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.email}"></td>
+                    <td th:text="${order.product}"></td>
+                    <td th:text="${order.quantity}"></td>
+                    <td th:text="${order.totalprice}"></td>
+                    
+                    
                 </tr>
             </tbody>
         </table>

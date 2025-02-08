@@ -42,13 +42,6 @@ public class ProductServiceImpl implements ProductService {
      return productRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public double getPriceProduct(Long id){
-     Price price = productRepository.findById(id);
-
-     return price.getPriceProduct();
-    } 
-
 
 
 //     @Override

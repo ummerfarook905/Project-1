@@ -8,4 +8,8 @@ public interface OrderService {
 
     void addToCart(Long id, int quantity,String email);
 
+    double calculateTotalAmount(Long id,int quantity);
+
+    double getProductPrice(Long id);
+
 }

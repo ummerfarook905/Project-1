@@ -83,7 +83,14 @@
             <h3 th:text="${product.name}">Name</h3>
             <h3 th:text="${product.description}">Description</h3>
             <p th:text="'Price: $' + ${product.price}">Prize</p>
+            <!-- <button type="submit" name="quantity" value="2" class="quantity-btn increment-btn">+</button> -->
+
             <form th:action="@{/user/addToCart}" method="post">
+        
+                
+                <input type="hidden" name="id" value="${product.id}">
+                <input type="number" name="quantity" min="1" value="1">
+    
                 <button type="submit">Add to Cart</button>
             </form>
         </div>
