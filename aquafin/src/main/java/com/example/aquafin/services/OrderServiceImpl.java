@@ -15,8 +15,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private ProductService productService;
+    // @Autowired
+    // private ProductService productService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -24,11 +24,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void  addToCart(Long id,int quantity,String email){
 
-        Product product = productService.getProductById(id);
+        // Product product = productService.getProductById(id);
 
-        double totalPrice = calculateTotalAmount(id,quantity);
+        // double totalPrice = calculateTotalAmount(id,quantity);
 
         // float totalPrice = product.getPrice(id) * quantity;
+
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found")); 
+
+        float totalPrice = product.getPrice() * quantity;
 
         Order order = new Order();
         order.setEmail(email);
@@ -40,23 +45,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     
-    @Override
-    public double calculateTotalAmount(Long id,int quantity){
+    // @Override
+    // public double calculateTotalAmount(Long id,int quantity){
 
-        double productPrice = getProductPrice(id);
+    //     double productPrice = getProductPrice(id);
 
-        return  productPrice * quantity;
-    }
+    //     return  productPrice * quantity;
+    // }
 
-    @Override
-    public double getProductPrice(Long id) {
-        return getProduct(id).getPrice();
-    }
+    // @Override
+    // public double getProductPrice(Long id) {
+    //     return getProduct(id).getPrice();
+    // }
     
-    private Product getProduct(Long id) {
-        return productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
-    }
+    // private Product getProduct(Long id) {
+    //     return productRepository.findById(id)
+    //         .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+    // }
 
     
 
