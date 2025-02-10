@@ -76,6 +76,9 @@
 
     </div>
     <h1>Product List</h1>
+    <div>
+        <a th:href="@{/user-cart}">View Cart</a>
+    </div>
     <div class="product-grid">
         Loop through products
         <div class="product" th:each="product : ${products}">

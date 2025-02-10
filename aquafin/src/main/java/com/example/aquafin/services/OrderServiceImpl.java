@@ -1,6 +1,9 @@
 package com.example.aquafin.services;
 
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,17 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(totalPrice);
 
         orderRepository.save(order);
+    }
+
+    
+    @Override
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> getOrdersByEmail(String email) {
+        return orderRepository.findByEmail(email);
     }
 
     
