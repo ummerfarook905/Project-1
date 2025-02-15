@@ -11,7 +11,7 @@ import com.example.aquafin.models.Order;
 @Service
 public interface OrderService {
 
-    void addToCart(Long id, int quantity,String email);
+    void addToCart(Long id, int quantity,String email,String productName);
 
     List<Order> getOrders();
 

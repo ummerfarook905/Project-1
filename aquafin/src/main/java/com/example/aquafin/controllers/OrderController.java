@@ -23,22 +23,32 @@ public class OrderController {
     // ProductService productService;
 
     @PostMapping("/user/addToCart")
-    public String addToCart(@RequestParam Long id ,  @RequestParam int quantity,Principal principal){
+    public String addToCart(@RequestParam Long id ,  @RequestParam int quantity,@RequestParam String productName,Principal principal,Model model){
 
         String email = principal.getName();
+    
 
         // double product = productservice.getProductById(Long id);
 
         // double totalPrice = orderService.calculateTotalAmount(quantity);
 
-        orderService.addToCart(id, quantity,email);
+        orderService.addToCart(id, quantity,email,productName);
+
+        List<Order> orders = orderService.getOrdersByEmail(email);
+        model.addAttribute("orders", orders);
         return "user-cart";
     }
     @GetMapping("/user-cart")
     public String viewCart(Model model,Principal principal) {
         String email = principal.getName();
         List<Order> orders = orderService.getOrdersByEmail(email);
+
+        double totalAmount = orders.stream()
+                             .mapToDouble(Order::getAmount)
+                             .sum();
         model.addAttribute("orders", orders);
+        model.addAttribute("totalAmount", totalAmount);
+        
         return "user-cart";
 }
 

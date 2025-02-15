@@ -79,8 +79,7 @@
             <thead>
                 <tr>
                     <th>orderId</th>
-                    <th>Email</th>
-                    <th>ProductID</th>
+                    <th>ProductName</th>
                     <th>Quantity</th>
                     <th>TotalPrice</th>
                 </tr>
@@ -88,10 +87,9 @@
             <tbody>
                 <tr th:each="order : ${orders}">
                     <td th:text="${order.id}"></td>
-                    <td th:text="${order.email}"></td>
-                    <td th:text="${order.product}"></td>
+                    <td th:text="${order.productName}"></td>
                     <td th:text="${order.quantity}"></td>
-                    <td th:text="${order.totalprice}"></td>
+                    <td th:text="${order.totalPrice}"></td>
                 </tr>
             </tbody>
         </table>

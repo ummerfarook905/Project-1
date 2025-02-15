@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Override
-    public void  addToCart(Long id,int quantity,String email){
+    public void  addToCart(Long id,int quantity,String email,String productName){
 
         // Product product = productService.getProductById(id);
 
@@ -40,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = new Order();
         order.setEmail(email);
+        order.setProductName(productName);
         order.setProduct(product);
         order.setQuantity(quantity);
         order.setTotalPrice(totalPrice);
