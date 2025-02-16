@@ -36,6 +36,12 @@ public class OrderController {
 
         List<Order> orders = orderService.getOrdersByEmail(email);
         model.addAttribute("orders", orders);
+
+        double totalAmount = 0.0;
+        for (Order order : orders) {
+        totalAmount += order.getTotalPrice(); // Assuming Order has getPrice() method
+        }
+        model.addAttribute("totalAmount", totalAmount);
         return "user-cart";
     }
     @GetMapping("/user-cart")
@@ -43,9 +49,10 @@ public class OrderController {
         String email = principal.getName();
         List<Order> orders = orderService.getOrdersByEmail(email);
 
-        double totalAmount = orders.stream()
-                             .mapToDouble(Order::getAmount)
-                             .sum();
+        double totalAmount = 0.0;
+        for (Order order : orders) {
+        totalAmount += order.getTotalPrice(); // Assuming Order has getPrice() method
+        }
         model.addAttribute("orders", orders);
         model.addAttribute("totalAmount", totalAmount);
         
