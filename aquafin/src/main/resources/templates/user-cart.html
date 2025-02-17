@@ -97,8 +97,10 @@
         <div class="total-price">
             <strong>Total Price: $<span th:text="${totalAmount}"></span></strong>
         </div>
-    
+        
+        <form th:action="@{/pay}" method="post"></form>
         <button class="btn-checkout">Proceed to Checkout</button>
+        </form>
     </div>
     
 </body>
