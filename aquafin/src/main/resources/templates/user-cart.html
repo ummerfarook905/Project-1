@@ -80,6 +80,7 @@
                 <tr>
                     <th>orderId</th>
                     <th>ProductName</th>
+                    <th>ProductId</th>
                     <th>Quantity</th>
                     <th>TotalPrice</th>
                 </tr>
@@ -88,6 +89,7 @@
                 <tr th:each="order : ${orders}">
                     <td th:text="${order.id}"></td>
                     <td th:text="${order.productName}"></td>
+                    <td th:text="${order.productId}"></td>
                     <td th:text="${order.quantity}"></td>
                     <td th:text="${order.totalPrice}"></td>
                 </tr>
@@ -98,8 +100,11 @@
             <strong>Total Price: $<span th:text="${totalAmount}"></span></strong>
         </div>
         
-        <form th:action="@{/pay}" method="post"></form>
-        <button class="btn-checkout">Proceed to Checkout</button>
+        <form th:action="@{/pay}" method="post">
+            <input type="hidden" name="productId" th:value="${order.productId}"/>
+            <input type="hidden" name="quantity" th:value="${order.quantity}"/>
+            <input type="hidden" name="totalPrice" th:value="${totalAmount}"/>
+        <button type="submit" class="btn-checkout">Proceed to Checkout</button>
         </form>
     </div>
     

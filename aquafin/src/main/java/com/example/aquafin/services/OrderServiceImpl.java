@@ -8,15 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.aquafin.models.Order;
-import com.example.aquafin.models.Product;
 import com.example.aquafin.repositories.OrderRepository;
-import com.example.aquafin.repositories.ProductRepository;
+
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    // @Autowired
+    // private ProductRepository productRepository;
 
     // @Autowired
     // private ProductService productService;
@@ -25,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Override
-    public void  addToCart(Long id,int quantity,String email,String productName){
+    public void  addToCart(String id,int quantity,String email,String productName,float price){
 
         // Product product = productService.getProductById(id);
 
@@ -33,15 +32,15 @@ public class OrderServiceImpl implements OrderService {
 
         // float totalPrice = product.getPrice(id) * quantity;
 
-        Product product = productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found")); 
+        // Product product = productRepository.findById(id)
+        //     .orElseThrow(() -> new RuntimeException("Product not found")); 
 
-        float totalPrice = product.getPrice() * quantity;
+        float totalPrice = price * quantity;
 
         Order order = new Order();
         order.setEmail(email);
         order.setProductName(productName);
-        order.setProduct(product);
+        order.setProductId(id);
         order.setQuantity(quantity);
         order.setTotalPrice(totalPrice);
 

@@ -28,7 +28,7 @@ public class OrderController {
     // ProductService productService;
 
     @PostMapping("/user/addToCart")
-    public String addToCart(@RequestParam Long id ,  @RequestParam int quantity,@RequestParam String productName,Principal principal,Model model){
+    public String addToCart(@RequestParam String id ,  @RequestParam int quantity,@RequestParam String productName,@RequestParam float price,Principal principal,Model model){
 
         String email = principal.getName();
     
@@ -37,7 +37,7 @@ public class OrderController {
 
         // double totalPrice = orderService.calculateTotalAmount(quantity);
 
-        orderService.addToCart(id, quantity,email,productName);
+        orderService.addToCart(id, quantity,email,productName,price);
 
         List<Order> orders = orderService.getOrdersByEmail(email);
         model.addAttribute("orders", orders);
@@ -66,13 +66,13 @@ public class OrderController {
 
     @PostMapping("/pay")
     public String payForOrder(
-        @RequestParam Long product,@RequestParam int quantity,
+        @RequestParam String productId,@RequestParam int quantity,
         Principal principal,RedirectAttributes redirectAttributes,double totalAmount){
 
             try{
                 // String userEmail = principal.getName();
 
-                Stripe.apiKey = "sk_test_51QLIbeGMcBpNczFvGfV2wOAKm4hY3Ehr9C7ObeR1hpFAJD0Ds7XACcc1gUBcMv8XO7lLARCPDEtzdrXXPhbb8J5300Wr5IzmEo";
+                Stripe.apiKey = "sk_test_51QtoigP8frw7MYicvGrF7NeXuskG7EavK91IxGTaFBqz4AVNgosp2YhHzulQOIAULWldBfpwmMu5RCBOyK4gpXhf00Mtafchc3";
 
                 SessionCreateParams params = SessionCreateParams.builder()
                     .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
@@ -88,7 +88,7 @@ public class OrderController {
                                                     .setUnitAmount((long) (totalAmount * 100)) // Amount in cents
                                                     .setProductData(
                                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                    .setName("Order Placed: " + product)
+                                                                    .setName("Order Placed: " + productId)
                                                                     .build()
                                                     )
                                                     .build()
