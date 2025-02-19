@@ -17,6 +17,8 @@ public interface OrderService {
 
     List<Order> getOrdersByEmail(String email);
 
+    void deleteOrdersByEmail(String email);
+
     // double calculateTotalAmount(Long id,int quantity);
 
     // double getProductPrice(Long id);

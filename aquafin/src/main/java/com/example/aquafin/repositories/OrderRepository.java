@@ -13,6 +13,7 @@ import com.example.aquafin.models.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByEmail(String email);
+    void deleteByEmail(String email);
     
 
 }

@@ -101,10 +101,12 @@
         </div>
         
         <form th:action="@{/pay}" method="post">
-            <input type="hidden" name="productId" th:value="${order.productId}"/>
-            <input type="hidden" name="quantity" th:value="${order.quantity}"/>
-            <input type="hidden" name="totalPrice" th:value="${totalAmount}"/>
-        <button type="submit" class="btn-checkout">Proceed to Checkout</button>
+            <!-- <div th:each="order : ${orders}">
+                <input type="hidden" name="productIds" th:value="${order.productId}"/>
+                <input type="hidden" name="quantities" th:value="${order.quantity}"/>
+            </div> -->
+            <input type="hidden" name="totalAmount" th:value="${totalAmount}"/>
+            <button type="submit" class="btn-checkout">Proceed to Checkout</button>
         </form>
     </div>
     

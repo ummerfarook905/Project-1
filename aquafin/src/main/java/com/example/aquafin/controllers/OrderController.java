@@ -1,6 +1,7 @@
 package com.example.aquafin.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.aquafin.models.ConfirmOrder;
 import com.example.aquafin.models.Order;
+import com.example.aquafin.repositories.ConfirmOrderRepository;
+import com.example.aquafin.services.ConfirmOrderService;
 import com.example.aquafin.services.OrderService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -23,6 +27,12 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    private ConfirmOrderService confirmOrderService;
+
+    @Autowired
+    private ConfirmOrderRepository confirmOrderRepository;
 
     // @Autowired
     // ProductService productService;
@@ -65,42 +75,55 @@ public class OrderController {
     }
 
     @PostMapping("/pay")
-    public String payForOrder(
-        @RequestParam String productId,@RequestParam int quantity,
-        Principal principal,RedirectAttributes redirectAttributes,double totalAmount){
+public String payForOrder(
+    Principal principal,
+    // @RequestParam("totalAmount") double totalAmount,  // Make sure to get totalAmount from form
+    RedirectAttributes redirectAttributes) {
 
-            try{
-                // String userEmail = principal.getName();
+    try {
+        String userEmail = principal.getName();
+        
+        // Get user's orders
+        List<Order> orders = orderService.getOrdersByEmail(userEmail);
+        
+        Stripe.apiKey = "sk_test_51QtoigP8frw7MYicvGrF7NeXuskG7EavK91IxGTaFBqz4AVNgosp2YhHzulQOIAULWldBfpwmMu5RCBOyK4gpXhf00Mtafchc3";
 
-                Stripe.apiKey = "sk_test_51QtoigP8frw7MYicvGrF7NeXuskG7EavK91IxGTaFBqz4AVNgosp2YhHzulQOIAULWldBfpwmMu5RCBOyK4gpXhf00Mtafchc3";
-
-                SessionCreateParams params = SessionCreateParams.builder()
-                    .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                    .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setSuccessUrl("http://localhost:8080/success")
-                    .setCancelUrl("http://localhost:8080/cancel")
-                    .addLineItem(
-                            SessionCreateParams.LineItem.builder()
-                                    .setQuantity((long) quantity)
-                                    .setPriceData(
-                                            SessionCreateParams.LineItem.PriceData.builder()
-                                                    .setCurrency("usd")
-                                                    .setUnitAmount((long) (totalAmount * 100)) // Amount in cents
-                                                    .setProductData(
-                                                            SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                    .setName("Order Placed: " + productId)
-                                                                    .build()
-                                                    )
-                                                    .build()
-                                    )
+        // Create line items for each order
+        List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
+        
+        for (Order order : orders) {
+            lineItems.add(
+                SessionCreateParams.LineItem.builder()
+                    .setQuantity((long) order.getQuantity())  // Set quantity
+                    .setPriceData(
+                        SessionCreateParams.LineItem.PriceData.builder()
+                            .setCurrency("usd")
+                            .setUnitAmount(Math.round(order.getPrice() * 100))
+                            .setProductData(
+                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                    .setName(order.getProductName())  // Use product name
+                                    .setDescription("Quantity: " + order.getQuantity())  // Add quantity info
                                     .build()
+                            )
+                            .build()
                     )
-                    .build();
+                    .build()
+            );
+        }
 
-                Session session = Session.create(params);
+        // Create session with all line items
+        SessionCreateParams params = SessionCreateParams.builder()
+            .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+            .setMode(SessionCreateParams.Mode.PAYMENT)
+            .setSuccessUrl("http://localhost:8080/success")
+            .setCancelUrl("http://localhost:8080/cancel")
+            .addAllLineItem(lineItems)  // Add all line items
+            .setCustomerEmail(userEmail)  // Add customer email
+            .build();
 
-                return "redirect:" + session.getUrl();
-
+        Session session = Session.create(params);
+        return "redirect:" + session.getUrl();
+        
             }
             catch(StripeException e){
                 redirectAttributes.addFlashAttribute("error",  "Payment failed: " + e.getMessage());
@@ -110,9 +133,45 @@ public class OrderController {
     }
     
     @GetMapping("/success")
-    public String paymentSuccess(RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("message", "Payment successful! Your booking has been confirmed.");
-        return "redirect:/order-view";
+    public String handlePaymentSuccess(
+            @RequestParam("session_id") String sessionId,
+            Principal principal,
+            RedirectAttributes redirectAttributes) {
+        try {
+            // Retrieve the session from Stripe
+            Stripe.apiKey = "sk_test_51QtoigP8frw7MYicvGrF7NeXuskG7EavK91IxGTaFBqz4AVNgosp2YhHzulQOIAULWldBfpwmMu5RCBOyK4gpXhf00Mtafchc3";
+            Session session = Session.retrieve(sessionId);
+
+            // Check if payment was successful
+            if ("complete".equals(session.getStatus())) {
+                String email = principal.getName();
+                String paymentId = session.getPaymentIntent();
+
+                // Create confirm orders and clear cart
+                confirmOrderService.createConfirmOrdersFromCart(email, paymentId);
+
+                redirectAttributes.addFlashAttribute("success", 
+                    "Payment successful! Your order has been confirmed.");
+                return "redirect:/order-confirmation";
+            }
+
+            redirectAttributes.addFlashAttribute("error", 
+                "Payment was not completed successfully.");
+            return "redirect:/user-cart";
+
+        } catch (StripeException e) {
+            redirectAttributes.addFlashAttribute("error", 
+                "Error processing payment confirmation: " + e.getMessage());
+            return "redirect:/user-cart";
+        }
+    }
+
+    @GetMapping("/order-confirmation")
+    public String showOrderConfirmation(Model model, Principal principal) {
+        String email = principal.getName();
+        List<ConfirmOrder> confirmOrders = confirmOrderRepository.findByEmail(email);
+        model.addAttribute("orders", confirmOrders);
+        return "order-confirmation";
     }
 
     @GetMapping("/cancel")
@@ -120,9 +179,6 @@ public class OrderController {
         redirectAttributes.addFlashAttribute("error", "Payment was canceled. Please try again.");
         return "redirect:/order-view";
     }
+
     
-
-
-
-
 }

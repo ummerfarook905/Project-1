@@ -42,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
         order.setProductName(productName);
         order.setProductId(id);
         order.setQuantity(quantity);
+        order.setPrice(price);
         order.setTotalPrice(totalPrice);
 
         orderRepository.save(order);
@@ -57,6 +58,12 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrdersByEmail(String email) {
         return orderRepository.findByEmail(email);
     }
+
+    @Override
+    public void deleteOrdersByEmail(String email) {
+        orderRepository.deleteByEmail(email);
+    }
+
 
     
     // @Override

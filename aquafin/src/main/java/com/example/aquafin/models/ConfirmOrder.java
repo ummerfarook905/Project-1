@@ -1,5 +1,8 @@
 package com.example.aquafin.models;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,20 +10,33 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="confirmOrders")
+@Table(name="confirm_orders")
 public class ConfirmOrder {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long confirmId;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "product_id")
+    private String productId;
+
+    @Column(nullable = false)
+    private int quantity;
+
+    @Column(nullable = false)
+    private double totalPrice;
+
+    @Column(name = "payment_id")
     private String paymentId;
 
-    private String orderId;
-
-    private String quantity;
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
 
     public Long getConfirmId() {
         return confirmId;
@@ -38,6 +54,38 @@ public class ConfirmOrder {
         this.email = email;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public String getPaymentId() {
         return paymentId;
     }
@@ -46,21 +94,15 @@ public class ConfirmOrder {
         this.paymentId = paymentId;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public LocalDateTime getOrderDate() {
+        return orderDate;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
+    
 
 
 

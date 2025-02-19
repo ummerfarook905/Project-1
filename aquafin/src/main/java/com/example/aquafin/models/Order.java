@@ -29,6 +29,9 @@ public class Order {
     private int quantity;
 
     @Column(nullable = false)
+    private double  Price;
+
+    @Column(nullable = false)
     private double  totalPrice;
     
 
@@ -79,6 +82,14 @@ public class Order {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(double Price) {
+        this.Price = Price;
     }
 
 
