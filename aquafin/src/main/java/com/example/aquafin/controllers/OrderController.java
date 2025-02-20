@@ -134,32 +134,19 @@ public String payForOrder(
     
     @GetMapping("/success")
     public String handlePaymentSuccess(
-            @RequestParam("session_id") String sessionId,
+            // @RequestParam("session_id") String sessionId,
             Principal principal,
             RedirectAttributes redirectAttributes) {
         try {
-            // Retrieve the session from Stripe
-            Stripe.apiKey = "sk_test_51QtoigP8frw7MYicvGrF7NeXuskG7EavK91IxGTaFBqz4AVNgosp2YhHzulQOIAULWldBfpwmMu5RCBOyK4gpXhf00Mtafchc3";
-            Session session = Session.retrieve(sessionId);
 
-            // Check if payment was successful
-            if ("complete".equals(session.getStatus())) {
-                String email = principal.getName();
-                String paymentId = session.getPaymentIntent();
-
-                // Create confirm orders and clear cart
-                confirmOrderService.createConfirmOrdersFromCart(email, paymentId);
-
-                redirectAttributes.addFlashAttribute("success", 
+            String email = principal.getName();
+            confirmOrderService.createConfirmOrdersFromCart(email);
+            redirectAttributes.addFlashAttribute("success", 
                     "Payment successful! Your order has been confirmed.");
                 return "redirect:/order-confirmation";
-            }
 
-            redirectAttributes.addFlashAttribute("error", 
-                "Payment was not completed successfully.");
-            return "redirect:/user-cart";
 
-        } catch (StripeException e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", 
                 "Error processing payment confirmation: " + e.getMessage());
             return "redirect:/user-cart";
@@ -171,7 +158,7 @@ public String payForOrder(
         String email = principal.getName();
         List<ConfirmOrder> confirmOrders = confirmOrderRepository.findByEmail(email);
         model.addAttribute("orders", confirmOrders);
-        return "order-confirmation";
+        return "orders-confirmation";
     }
 
     @GetMapping("/cancel")

@@ -33,6 +33,7 @@ public class Order {
 
     @Column(nullable = false)
     private double  totalPrice;
+
     
 
     public Long getId() {
@@ -91,6 +92,7 @@ public class Order {
     public void setPrice(double Price) {
         this.Price = Price;
     }
+
 
 
 }

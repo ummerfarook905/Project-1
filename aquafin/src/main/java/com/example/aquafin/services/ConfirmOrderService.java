@@ -25,7 +25,7 @@ public class ConfirmOrderService {
     private OrderService orderService;
 
     @Transactional
-    public void createConfirmOrdersFromCart(String email, String paymentId) {
+    public void createConfirmOrdersFromCart(String email) {
         // Get cart orders
         List<Order> cartOrders = orderService.getOrdersByEmail(email);
         
@@ -38,7 +38,6 @@ public class ConfirmOrderService {
                 confirmOrder.setProductId(order.getProductId());
                 confirmOrder.setQuantity(order.getQuantity());
                 confirmOrder.setTotalPrice(order.getTotalPrice());
-                confirmOrder.setPaymentId(paymentId);
                 confirmOrder.setOrderDate(LocalDateTime.now());
                 return confirmOrder;
             })

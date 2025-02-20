@@ -32,9 +32,6 @@ public class ConfirmOrder {
     @Column(nullable = false)
     private double totalPrice;
 
-    @Column(name = "payment_id")
-    private String paymentId;
-
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
@@ -84,14 +81,6 @@ public class ConfirmOrder {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public String getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(String paymentId) {
-        this.paymentId = paymentId;
     }
 
     public LocalDateTime getOrderDate() {
