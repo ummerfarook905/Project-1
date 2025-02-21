@@ -7,33 +7,25 @@
 </head>
 <body>
 
-<h1>Update Products</h1>
-    <form  th:action="@{/super-admin/update-products/{id}(id=${product.id})}" th:object="${product}" method="post">
-        <h1>Update products</h1>
-
-        <label for="productId">Product Id</label>
-        <input type="text" id="productId" th:field="*{id}" required>
-
-        <label for="productName">Product Name</label>
-        <input type="text" id="productName" th:field="*{name}" required>
-
-        <label for="productDescription">Product Description</label>
-        <input type="text" id="productDescription" th:field="*{description}" required>
-
-        <label for="productPrice">Product Price</label>
-        <input  id="productPrice" th:field="*{price}" required>
-
-        <label for="productQuantity">Product Quantity</label>
-        <input  id="productQuantity" th:field="*{quantity}" required>
-
-        <label for="productImage">Product Image</label>
-        <input  id="productImage" th:field="*{image}" required>
-
-        <button type="submit">Update Products</button>
-
-    </form>
-    <form th:action="@{/super-admin/delete-product/{id}(id=${product.id})}" method="post">
-        <button type="submit">Delete</button>
+    <h1>Update Product</h1>
+    
+    <form action="/super-admin/update-products/{{product.id}}" method="POST" enctype="multipart/form-data">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" value="${product.name}" required>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required>${product.description}</textarea>
+        
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" value="${product.price}" required>
+        
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="${product.quantity}" required>
+        
+        <label for="image">Product Image:</label>
+        <input type="file" id="image" name="image">
+        
+        <button type="submit">Update Product</button>
     </form>
 
     <div>

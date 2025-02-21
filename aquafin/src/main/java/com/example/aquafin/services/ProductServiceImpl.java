@@ -42,6 +42,14 @@ public class ProductServiceImpl implements ProductService {
      return productRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public List<Product> searchProducts(String name){
+     if(name != null){
+          return productRepository.searchProducts(name);
+     }
+     return productRepository.findAll();
+    }
+
 
 
 //     @Override

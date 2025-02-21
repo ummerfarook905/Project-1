@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.aquafin.models.Product;
 import com.example.aquafin.services.ProductService;
@@ -82,6 +83,14 @@ public class ProductController {
     public String deleteProduct(@PathVariable("id") Long id){
         productService.deleteProductById(id);
         return "redirect:/super-admin/view-products";
+    }
+
+    @GetMapping("/product-search")
+    public String searchProducts(@RequestParam(value="name",required = false) String name,Model model){
+        List<Product> products = productService.searchProducts(name);
+        model.addAttribute("products", products);
+        model.addAttribute("name", name);
+        return "product-search";
     }
 
     // @PostMapping("/super-admin/delete-product/{id}")

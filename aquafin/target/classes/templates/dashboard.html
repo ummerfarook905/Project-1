@@ -76,6 +76,13 @@
 
     </div>
     <h1>Product List</h1>
+
+    <form action="/product-search" method="get">
+        <label for="name">Search Products:</label>
+        <input type="text" id="name" name="name" placeholder="Enter product name" value="${name}">
+        <button type="submit">Search</button>
+    </form>
+
     <div>
         <a th:href="@{/user-cart}">View Cart</a>
     </div>
