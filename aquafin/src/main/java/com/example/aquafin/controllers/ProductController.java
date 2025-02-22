@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.aquafin.models.Product;
+import com.example.aquafin.repositories.ProductRepository;
 import com.example.aquafin.services.ProductService;
 
 
@@ -21,6 +23,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping("/super-admin/add-product")
     @PreAuthorize("hasAthority('SUPER_ADMIN')")
@@ -60,22 +65,53 @@ public class ProductController {
         return "update-product";
     }
 
+    // @PostMapping("/super-admin/update-products/{id}")
+    // @PreAuthorize("hasAthority('SUPER_ADMIN')")
+    // public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product product){
+    //     Product existProduct = productService.getProductById(id);
+
+    //     if(existProduct != null){
+    //         existProduct.setName(product.getName());
+    //         existProduct.setDescription(product.getDescription());
+    //         existProduct.setPrice(product.getPrice());
+    //         existProduct.setQuantity(product.getQuantity());
+    //         existProduct.setImage(product.getImage());
+
+    //         productService.updateProduct(existProduct);
+    //     }
+
+    //     return "redirect:/super-admin/view-products";
+    // }
+
     @PostMapping("/super-admin/update-products/{id}")
-    @PreAuthorize("hasAthority('SUPER_ADMIN')")
-    public String updateProduct(@PathVariable Long id,@ModelAttribute("product") Product product){
-        Product existProduct = productService.getProductById(id);
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+    public String updateProduct(@PathVariable("id") Long id,
+                                @ModelAttribute Product updatedProduct,
+                                RedirectAttributes redirectAttributes){
+        Product product = productRepository.findById(id).orElse(null);
 
-        if(existProduct != null){
-            existProduct.setName(product.getName());
-            existProduct.setDescription(product.getDescription());
-            existProduct.setPrice(product.getPrice());
-            existProduct.setQuantity(product.getQuantity());
-            existProduct.setImage(product.getImage());
+        if(product != null) {
+            // Update basic details
+            product.setName(updatedProduct.getName());
+            product.setDescription(updatedProduct.getDescription());
+            product.setPrice(updatedProduct.getPrice());
+            product.setQuantity(updatedProduct.getQuantity());
+            product.setImage(updatedProduct.getImage());
 
-            productService.updateProduct(existProduct);
+
+
+            productRepository.save(product);
+            redirectAttributes.addFlashAttribute("message", 
+                "Product updated successfully");
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error", 
+                "Product not found");
         }
 
-        return "redirect:/super-admin/view-products";
+        return "redirect::/super-admin/view-products";
+
+
     }
 
     @PostMapping("/super-admin/delete-product/{id}")
