@@ -43,9 +43,7 @@
                         </form>
                     </td>
                     <td>
-                        <form th:action="@{/super-admin/update-products/{id}(id=${product.id})}" method="post">
-                            <button type="submit">Update</button>
-                        </form>
+                        <a th:href="@{/super-admin/update-products/{id}(id=${product.id})}">Update</a>
                     </td>
                 </tr>
             </tbody>
